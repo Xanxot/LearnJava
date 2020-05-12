@@ -3,13 +3,15 @@ package com.company;
 import java.util.Map;
 
 public interface BanknoteCell {
-    public void add(Banknote banknote) throws Exception;
+    void add(Banknote banknote);
 
-    public void out(int count);
+    void out(int count);
 
-    public Map stat();
+    Map stat();
 
-    public int getBalance();
+    int getBalance();
 
-    public int getCount();
+    int getCount();
+
+    int getPrice();
 }

@@ -13,17 +13,12 @@ public class Main {
         banknotes.add(FIVE_THOUSAND);
         banknotes.add(FIFTY);
         ATM atm = new ATM();
+        atm.getStats();
         atm.withdrawal(banknotes);
-       // atm.out(6950);
+        atm.getStats();
+        atm.out(5000);
+        atm.getStats();
 
-        //System.out.println(atm.withdrawal(new int[]{500, 12, 23, 50, 200, 100, 1000, 10, 5000, 500, 50}));
-        //atm.withdrawal()
-        //atm.balance();
-
-      //  String[] messages = atm.getStats();
-      //  for (String message : messages) {
-      //      System.out.println(message);
-      //  }
 
 
     }

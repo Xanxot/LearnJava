@@ -5,15 +5,15 @@ import java.util.*;
 import static com.company.Banknote.*;
 
 public class ATM {
-    Store store = new Store();
+    Store store = new StoreImpl();
 
     public void out(int count) throws Exception {
         if (count<=0){
             throw new Exception(new ATMCashOutException("Значение должно быть больше 0"));
         }else {
-            int minPrice = 2147483647;
+            int minPrice = Integer.MAX_VALUE;
             for (var Name : Banknote.values()) {
-                if (valueOf(Name.toString()).value < minPrice) {
+                if (Name.value < minPrice) {
                     minPrice = valueOf(Name.toString()).value;
                 }
             }
@@ -25,13 +25,8 @@ public class ATM {
     }
 
     public void withdrawal(Collection<Banknote> banknotes) {
-        banknotes.forEach(banknote -> {
-            try {
-                store.add(banknote);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        banknotes.forEach(banknote -> store.add(banknote));
+
 
     }
 
@@ -56,20 +51,6 @@ public class ATM {
 
 
 
-
-    // private Map<Banknote, BanknoteCellIpl> banknoteCell=new HashMap<>();
-
-    // public ATM(){
-//
-//
-    //     for (var Name:Banknote.values()) {
-    //         BanknoteCellIpl banknoteCellIpl = new BanknoteCellIpl(Name, 5);
-    //         banknoteCell.put(Name,banknoteCellIpl);
-//
-    //     }
-    //     System.out.println(banknoteCell.get(FIVE_THOUSAND).countOfBanknote);
-//
-    // }
 
 
 }
