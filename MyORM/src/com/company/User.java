@@ -11,9 +11,6 @@ public class User {
         this.age = age;
         this.name = name;
     }
-    public User(){
-        System.out.println("hi");
-    }
 
     public void setId(int id) {
         this.id = id;

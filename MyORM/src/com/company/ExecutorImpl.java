@@ -5,34 +5,51 @@ import java.util.HashMap;
 
 public class ExecutorImpl implements Executor {
 
-    private static final String URL = "jdbc:h2:mem:";
+    private static final String URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
     private final Connection connection;
     HashMap<String, String> data = null;
     Reflection reflection;
 
-    public ExecutorImpl() throws Exception {
+    public ExecutorImpl(Object obj) throws Exception {
+        this.reflection = new Reflection(obj);
+        if (this.data == null) {
+            this.data = reflection.getResult();
+        }
         this.connection = DriverManager.getConnection(URL);
         this.connection.setAutoCommit(false);
-        PreparedStatement pst = connection.prepareStatement
-                ("create table user (id bigint(20) NOT NULL auto_increment, " +
-                        "name varchar(255), age int(3))");
-        System.out.println(pst);
-        pst.executeUpdate();
-        pst.close();
-
-
     }
 
     @Override
     public void save(Object objectData) throws Exception {
         this.reflection = new Reflection(objectData);
         this.data = reflection.getResult();
-        System.out.println(data);
-        PreparedStatement sv = connection.prepareStatement("insert into user (id, name, age) values (?,?,?)");
-        sv.setString(1, data.get("id"));
-        sv.setString(2, data.get("name"));
-        sv.setString(3, data.get("age"));
+
+        int cursor = 1;
+        StringBuilder keyBuilder = new StringBuilder("(");
+        StringBuilder valueBuilder = new StringBuilder("(");
+
+        for (String key : data.keySet()) {
+            keyBuilder.append(key).append(", ");
+            valueBuilder.append("?").append(", ");
+        }
+
+        valueBuilder.setLength(valueBuilder.length() - 2);
+        valueBuilder.append(")");
+        keyBuilder.setLength(keyBuilder.length() - 2);
+        keyBuilder.append(")");
+
+        String query = "insert into " + reflection.getName() + " " + keyBuilder + " values " + valueBuilder;
+
+        System.out.println(query);
+
+        PreparedStatement sv = connection.prepareStatement(query);
+
+        for (String value : data.values()) {
+            sv.setString(cursor++, value);
+        }
+
         System.out.println(sv);
+
         sv.executeUpdate();
         sv.close();
     }
@@ -40,28 +57,26 @@ public class ExecutorImpl implements Executor {
 
     @Override
     public Object load(long id, Class clazz) throws Exception {
-        long i = 0;
-        String name = null;
-        int age = 0;
+        HashMap<String, Object> values = new HashMap<>();
+        String query = "Select * from " + clazz.getSimpleName() + " where " + reflection.getPrimaryKey() + " = ?";
 
-        PreparedStatement sel = connection.prepareStatement("Select * from user where id = ?");
-        sel.setString(1, Long.toString(id));
+        System.out.println(query);
+        PreparedStatement sel = connection.prepareStatement(query);
+        sel.setString(1, Long.toString(id)); //Сюда лоничнее передавать String, но по тз long
         ResultSet resultSet = sel.executeQuery();
         System.out.println(resultSet);
+        int row=1;
         while (resultSet.next()) {
-            i = resultSet.getInt(1);
-            name = resultSet.getString(2);
-            age = resultSet.getInt(3);
-
+            for (int i = 1; i <= data.size(); i++) {
+                values.put("row"+row+": "+resultSet.getMetaData().getColumnName(i), resultSet.getObject(i));
+            }
+            row++;
         }
+
         resultSet.close();
         sel.close();
-        if (id < 1) {
-            throw new Exception(new IdException("Что-то пошло не так =("));
-        }
 
-
-        return "id: " + i + "\nName: " + name + "\nAge: " + age;
+        return values.toString();
     }
 }
 
