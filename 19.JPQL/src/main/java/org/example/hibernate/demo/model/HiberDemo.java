@@ -10,9 +10,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -53,15 +55,92 @@ public class HiberDemo {
     public static void main(String[] args) {
         HiberDemo demo = new HiberDemo();
 
-   //     demo.entityExample();
-//        demo.leakageExample();
-//        demo.fetchExample();
-        demo.JPQLExample();
-//        demo.nativeExample();
+        //  demo.entityExample();
+        //  demo.leakageExample();
+        //  demo.fetchExample();
+        //  demo.JPQLExample();
+        //  demo.nativeExample();
+
+        //  demo.phoneID(); //where id = 90
+        //  demo.phoneID1(); //with id = 50, 55, 60
+        //  demo.phoneID2(); // между [20, 30]
+        //  demo.phoneID3(); // по имени john - не правильно, скорее всего
+        //  demo.phoneID4(); // сортировать нужно по номеру или по id
+    }
+
+    private void phoneID4() {
+        insertPhones();
+
+        EntityManager entityManager = sessionFactory.createEntityManager();
+        List<Phone> selectedPhones = entityManager.createQuery(
+                "select p from Phone p ORDER BY p.number DESC ", Phone.class)
+                .getResultList();
+
+        System.out.println(selectedPhones);
+
 
     }
 
 
+    private void phoneID3() {
+        insertPhones();
+        insertJohn();
+        EntityManager entityManager = sessionFactory.createEntityManager();
+
+        List<Phone> selectedPhone = entityManager.createQuery(
+                "select b from Phone b JOIN b.person p where p.name = :personName", Phone.class)
+                .setParameter("personName", "John")
+                .getResultList();
+
+        System.out.println(selectedPhone);
+
+    }
+
+    private void phoneID2() {
+        insertPhones();
+
+        EntityManager entityManager = sessionFactory.createEntityManager();
+        List<Phone> selectedPhones = entityManager.createQuery(
+                "select p from Phone p where p.id >= :paramId1 and p.id <= :paramId2", Phone.class) //можно еще BETWEEN использовать, но мне лень
+                .setParameter("paramId1", 20L)
+                .setParameter("paramId2", 30L)
+                .getResultList();
+
+        System.out.println(selectedPhones);
+
+
+    }
+
+    private void phoneID1() {
+        insertPhones();
+
+        EntityManager entityManager = sessionFactory.createEntityManager();
+
+        List<Phone> selectedPhones = entityManager.createQuery(
+                "select p from Phone p where p.id = :paramId1 OR p.id = :paramId2 OR p.id = :paramId3", Phone.class)
+                .setParameter("paramId1", 50L)
+                .setParameter("paramId2", 55L)
+                .setParameter("paramId3", 60L)
+                .getResultList();
+
+        System.out.println(selectedPhones);
+
+
+    }
+
+    private void phoneID() {
+        insertPhones();
+
+        EntityManager entityManager = sessionFactory.createEntityManager();
+        List<Phone> selectedPhones = entityManager.createQuery(
+                "select p from Phone p where p.id = :paramId", Phone.class)
+                .setParameter("paramId", 90L)
+                .getResultList();
+
+        System.out.println(selectedPhones);
+
+
+    }
 
 
     private void entityExample() {
