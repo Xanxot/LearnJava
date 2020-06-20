@@ -1,18 +1,16 @@
 package com.company;
 
-import java.util.*;
+import java.util.Map;
 
 public interface Store {
-
-    Map<Banknote, BanknoteCell> banknoteCell = new HashMap<>();
-
     void add(Banknote banknote);
 
-    void out(int count) throws Exception;
+    void out(int count);
 
     int getBalance();
 
-    Map getStats();
+    Map<Banknote, Integer> getStats();
 
+    void restore();
 
 }

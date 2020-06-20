@@ -1,32 +1,47 @@
 package com.company;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StoreImpl implements Store {
+    AtmStateSaver atmStateSaver;
+
+    private Map<Banknote, BanknoteCell> banknoteCell = new HashMap<>();
+
 
     public StoreImpl() {
         for (var Name : Banknote.values()) {
-            BanknoteCell banknote = new BanknoteCellIpl(Name, 3);
-            banknoteCell.put(Name, banknote);
+            BanknoteCellImpl banknoteCellImpl = new BanknoteCellImpl(Name, 10);
+            banknoteCell.put(Name, banknoteCellImpl);
 
         }
-
+        startRestoreService();
     }
 
+    @Override
     public void add(Banknote banknote) {
 
         banknoteCell.get(banknote).add(banknote);
+    }
+
+
+    private void startRestoreService() {
+        this.atmStateSaver = new AtmStateSaver(banknoteCell.values());
 
     }
 
-    public void out(int count) throws Exception {
+
+    @Override
+    public void out(int count) {
         int counter = count;
         Integer[] values = new Integer[banknoteCell.size()];
         Banknote[] Names = Banknote.values();
         Arrays.sort(Names, Collections.reverseOrder());
         int c = 0;
         for (var Name : Banknote.values()) {
-            values[c++] = banknoteCell.get(Name).getPrice();
+            values[c++] = banknoteCell.get(Name).getValue();
         }
         Arrays.sort(values, Collections.reverseOrder());
 
@@ -36,6 +51,7 @@ public class StoreImpl implements Store {
             int denominator;
             if (counter / values[i] >= 1 && banknoteCell.get(Names[i]).getCount() > 0) {
                 denominator = counter / values[i];
+                System.out.println(values[i] + " " + counter / values[i]);
                 if (banknoteCell.get(Names[i]).getCount() < denominator) {
                     denominator = banknoteCell.get(Names[i]).getCount();
 
@@ -47,35 +63,36 @@ public class StoreImpl implements Store {
             }
         }
         if (extradition != count) {
-            //Пока так, но позже можно засунуть сюда memento
-            throw new Exception(new ATMCashOutException("В ATM недостаточно средств"));
+            throw new ATMCashOutException("В ATM недостаточно средств");
         }
+        System.out.println(extradition);
 
     }
 
+    @Override
     public int getBalance() {
         int balance = 0;
         for (var Name : Banknote.values()) {
 
             balance = balance + banknoteCell.get(Name).getBalance();
-
         }
         return balance;
-
     }
 
-    public Map getStats() {
-        int balance = 0;
+
+    @Override
+    public Map<Banknote, Integer> getStats() {
         Map<Banknote, Integer> info = new HashMap<>();
-        Map tempInfo;
         for (var Name : Banknote.values()) {
-            balance = balance + banknoteCell.get(Name).getBalance();
-            tempInfo = banknoteCell.get(Name).stat();
-            info.putAll(tempInfo);
-
+            info.putAll(banknoteCell.get(Name).stat());
         }
-
+        System.out.println(info);
         return info;
+    }
+
+    @Override
+    public void restore() {
+        this.banknoteCell = atmStateSaver.restore();
     }
 
 

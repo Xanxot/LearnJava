@@ -7,11 +7,15 @@ public interface BanknoteCell {
 
     void out(int count);
 
-    Map stat();
+    Banknote getBanknote();
+
+    Map<Banknote, Integer> stat();
 
     int getBalance();
 
     int getCount();
 
-    int getPrice();
+    String getName();
+
+    int getValue();
 }

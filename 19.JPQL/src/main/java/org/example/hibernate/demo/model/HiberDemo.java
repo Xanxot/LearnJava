@@ -64,7 +64,7 @@ public class HiberDemo {
         //  demo.phoneID(); //where id = 90
         //  demo.phoneID1(); //with id = 50, 55, 60
         //  demo.phoneID2(); // между [20, 30]
-        //  demo.phoneID3(); // по имени john - не правильно, скорее всего
+        //  demo.phoneID3(); // по имени john
         //  demo.phoneID4(); // сортировать нужно по номеру или по id
     }
 
