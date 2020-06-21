@@ -8,7 +8,7 @@ import static com.company.Banknote.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Collection<Banknote> banknotes = new ArrayList<>();
+        Collection<Banknote> banknotes = new ArrayList<Banknote>();
         banknotes.add(FIFTY);
         banknotes.add(FIVE_THOUSAND);
         banknotes.add(FIFTY);
