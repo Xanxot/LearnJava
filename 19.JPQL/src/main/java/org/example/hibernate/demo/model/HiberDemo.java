@@ -113,19 +113,15 @@ public class HiberDemo {
 
     private void phoneID1() {
         insertPhones();
-
+        List<Long> values = Arrays.asList(50L, 55L, 60L);
         EntityManager entityManager = sessionFactory.createEntityManager();
 
         List<Phone> selectedPhones = entityManager.createQuery(
-                "select p from Phone p where p.id = :paramId1 OR p.id = :paramId2 OR p.id = :paramId3", Phone.class)
-                .setParameter("paramId1", 50L)
-                .setParameter("paramId2", 55L)
-                .setParameter("paramId3", 60L)
+                "select p from Phone p where p.id IN :paramsId", Phone.class)
+                .setParameter("paramsId", values)
                 .getResultList();
 
         System.out.println(selectedPhones);
-
-
     }
 
     private void phoneID() {
