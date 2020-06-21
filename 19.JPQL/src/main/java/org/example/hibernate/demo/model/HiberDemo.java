@@ -8,16 +8,17 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Array;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -62,9 +63,9 @@ public class HiberDemo {
         //  demo.nativeExample();
 
         //  demo.phoneID(); //where id = 90
-        //  demo.phoneID1(); //with id = 50, 55, 60
+        // demo.phoneID1(); //with id = 50, 55, 60
         //  demo.phoneID2(); // между [20, 30]
-        //  demo.phoneID3(); // по имени john
+        //  demo.phoneID3(); // по имени john - не правильно, скорее всего
         //  demo.phoneID4(); // сортировать нужно по номеру или по id
     }
 
@@ -113,14 +114,12 @@ public class HiberDemo {
 
     private void phoneID1() {
         insertPhones();
-
+        List<Long> values = Arrays.asList(50L, 55L, 60L);
         EntityManager entityManager = sessionFactory.createEntityManager();
 
         List<Phone> selectedPhones = entityManager.createQuery(
-                "select p from Phone p where p.id = :paramId1 OR p.id = :paramId2 OR p.id = :paramId3", Phone.class)
-                .setParameter("paramId1", 50L)
-                .setParameter("paramId2", 55L)
-                .setParameter("paramId3", 60L)
+                "select p from Phone p where p.id IN :paramsId", Phone.class)
+                .setParameter("paramsId", values)
                 .getResultList();
 
         System.out.println(selectedPhones);
