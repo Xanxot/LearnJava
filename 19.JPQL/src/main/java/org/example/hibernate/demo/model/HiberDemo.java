@@ -8,16 +8,17 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Array;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -62,9 +63,9 @@ public class HiberDemo {
         //  demo.nativeExample();
 
         //  demo.phoneID(); //where id = 90
-        //  demo.phoneID1(); //with id = 50, 55, 60
+        // demo.phoneID1(); //with id = 50, 55, 60
         //  demo.phoneID2(); // между [20, 30]
-        //  demo.phoneID3(); // по имени john
+        //  demo.phoneID3(); // по имени john - не правильно, скорее всего
         //  demo.phoneID4(); // сортировать нужно по номеру или по id
     }
 
