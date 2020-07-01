@@ -2,17 +2,20 @@ package com.company;
 
 public class User {
     @id
-    public int id;
+    public Long id;
     public int age;
     public String name;
 
-    public User(int id, int age, String name) {
+    public User(Long id, String name, Integer age) {
         this.id = id;
         this.age = age;
         this.name = name;
     }
 
-    public void setId(int id) {
+    public User() {
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -24,7 +27,7 @@ public class User {
         this.name = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -37,7 +40,7 @@ public class User {
     }
 
     public void print() {
-        System.out.println(id + " " + age + " " + name);
+        System.out.println("id: " + id + " age: " + age + " name: " + name);
     }
 
 }
