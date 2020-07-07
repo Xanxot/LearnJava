@@ -1,6 +1,6 @@
-package Reflection;
+package com.company.dbService.reflection;
 
-import java.lang.reflect.Constructor;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ReflectionHelpClass {
         return fields;
     }
 
-    public static HashMap<String, String> getPKWithValue(Object cl, Class annotation) throws IllegalAccessException {
+    public static HashMap<String, String> getPrimaryKeyWithValue(Object cl, Class annotation) throws IllegalAccessException {
         Field[] fields = cl.getClass().getFields();
         HashMap<String, String> PK = new HashMap<>();
         int i = 0;
@@ -41,7 +41,7 @@ public class ReflectionHelpClass {
         return PK;
     }
 
-    public static HashMap<String, String> getResult(Object cl) throws IllegalAccessException {
+    public static HashMap<String, String> getAllFieldsWithValues(Object cl) throws IllegalAccessException {
         Field[] fields = cl.getClass().getFields();
         int i = 0;
         HashMap<String, String> objectData = new HashMap<>();
@@ -49,6 +49,7 @@ public class ReflectionHelpClass {
             objectData.put(field.getName(), fields[i++].get(cl).toString());
 
         }
+
         return objectData;
     }
 

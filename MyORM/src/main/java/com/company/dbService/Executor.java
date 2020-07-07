@@ -1,4 +1,4 @@
-package DBService;
+package com.company.dbService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,13 +9,8 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class Executor {
-    private final Connection connection;
 
-    public Executor(Connection connection) {
-        this.connection = connection;
-    }
-
-    public void insert(String query, HashMap<String, String> data) {
+    public void insert(String query, HashMap<String, String> data,Connection connection) {
         try (PreparedStatement sv = connection.prepareStatement(query)) {
             int cursor = 1;
 
@@ -29,7 +24,7 @@ public class Executor {
         }
     }
 
-    public void update(String query) {
+    public void update(String query,Connection connection) {
         try (PreparedStatement upd = connection.prepareStatement(query)) {
             int resultSet = upd.executeUpdate();
 
@@ -38,8 +33,7 @@ public class Executor {
         }
     }
 
-    public int count(String query) {
-        //todo: this shit String.format()
+    public int count(String query,Connection connection) {
 
         try (PreparedStatement sel = connection.prepareStatement(query)) {
             ResultSet resultSet = sel.executeQuery();
@@ -53,7 +47,7 @@ public class Executor {
         }
     }
 
-    public <T> Optional<T> select(String sql, long id, Function<ResultSet, T> rsHandler) {
+    public <T> Optional<T> select(String sql, long id, Function<ResultSet, T> rsHandler,Connection connection) {
         try (PreparedStatement sel = connection.prepareStatement(sql)) {
             sel.setLong(1, id);
             ResultSet resultSet = sel.executeQuery();

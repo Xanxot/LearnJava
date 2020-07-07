@@ -38,10 +38,4 @@ public class UserServlet extends HttpServlet {
         resp.setStatus(201);
     }
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String valueForName = req.getParameterValues("name")[0];
-        String password = req.getParameterValues("password")[0];
-        
-    }
 }

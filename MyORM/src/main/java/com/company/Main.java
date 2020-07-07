@@ -1,7 +1,7 @@
 package com.company;
 
-import DBService.DataSourceH2;
-import DBService.DbServiceImpl;
+import com.company.dbService.DataSourceH2;
+import com.company.dbService.DbServiceImpl;
 
 import javax.sql.DataSource;
 
