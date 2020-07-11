@@ -21,4 +21,15 @@ public class InMemoryUserDao implements org.example.user.UserDao {
     public User findByName(String name) {
         return users.get(name);
     }
+
+    @Override
+    public User delete(String name) {
+       return users.remove(name);
+    }
+
+    @Override
+    public User changeUser(String name,User user) {
+        return users.put(name,user);
+    }
+
 }

@@ -33,9 +33,39 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String valueForName = req.getParameterValues("name")[0];
         String password = req.getParameterValues("password")[0];
-        User user = new User(valueForName,password);
-        userDao.save(user);
-        resp.setStatus(201);
+        if (valueForName == null || password == null) {
+            resp.setStatus(404);
+        } else {
+            User user = new User(valueForName, password);
+            userDao.save(user);
+            resp.setStatus(201);
+        }
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String valueForName = req.getParameterValues("name")[0];
+        String newPass = req.getParameterValues("newPass")[0];
+
+        if (valueForName == null || newPass == null) {
+            resp.setStatus(404);
+        } else {
+            User user = new User(valueForName,newPass);
+            userDao.changeUser(valueForName,user);
+            resp.setStatus(201);
+        }
+
+    }
+
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String valueForName = req.getParameterValues("name")[0];
+        if (valueForName == null) {
+            resp.setStatus(404);
+        } else {
+            userDao.delete(valueForName);
+            resp.setStatus(200);
+        }
+    }
 }

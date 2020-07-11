@@ -6,4 +6,8 @@ public interface UserDao {
 
     User findByName(String name);
 
+    User delete(String name);
+
+    User changeUser(String name,User user);
+
 }
