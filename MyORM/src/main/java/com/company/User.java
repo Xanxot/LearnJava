@@ -39,8 +39,8 @@ public class User {
         return name;
     }
 
-    public void print() {
-        System.out.println("id: " + id + " age: " + age + " name: " + name);
+    public String toString() {
+        return ("id: " + id + " age: " + age + " name: " + name);
     }
 
 }

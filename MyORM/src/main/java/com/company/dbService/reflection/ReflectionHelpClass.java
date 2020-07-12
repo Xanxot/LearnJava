@@ -1,6 +1,5 @@
 package com.company.dbService.reflection;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -31,14 +30,14 @@ public class ReflectionHelpClass {
 
     public static HashMap<String, String> getPrimaryKeyWithValue(Object cl, Class annotation) throws IllegalAccessException {
         Field[] fields = cl.getClass().getFields();
-        HashMap<String, String> PK = new HashMap<>();
+        HashMap<String, String> primaryKey = new HashMap<>();
         int i = 0;
         for (Field field : fields) {
             if (field.getDeclaredAnnotations().length == 1 && field.getDeclaredAnnotations()[0].annotationType().equals(annotation)) {
-                PK.put(field.getName(), fields[i++].get(cl).toString());
+                primaryKey.put(field.getName(), fields[i++].get(cl).toString());
             }
         }
-        return PK;
+        return primaryKey;
     }
 
     public static HashMap<String, String> getAllFieldsWithValues(Object cl) throws IllegalAccessException {
@@ -47,15 +46,12 @@ public class ReflectionHelpClass {
         HashMap<String, String> objectData = new HashMap<>();
         for (Field field : fields) {
             objectData.put(field.getName(), fields[i++].get(cl).toString());
-
         }
-
         return objectData;
     }
 
     public static List<Field> getFields(Class object) {
-        List<Field> data = new ArrayList<>(Arrays.asList(object.getDeclaredFields()));
-        return data;
+        return new ArrayList<>(Arrays.asList(object.getDeclaredFields()));
     }
 
     public static <T> T instantiate(Class<T> type, Object... args) {
@@ -68,13 +64,10 @@ public class ReflectionHelpClass {
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
     public static String getName(Class object) {
         return object.getSimpleName();
     }
-
-
 }
