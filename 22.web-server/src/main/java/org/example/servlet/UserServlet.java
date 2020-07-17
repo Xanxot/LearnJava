@@ -6,9 +6,7 @@ import org.example.user.User;
 import org.example.user.UserDao;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 public class UserServlet extends HttpServlet {
@@ -44,11 +42,20 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String valueForName = req.getParameterValues("name")[0];
+        String valueForName = null;
         String newPass = req.getParameterValues("newPass")[0];
-
-        if (valueForName == null || newPass == null) {
-            resp.setStatus(404);
+        Cookie[] cookies = req.getCookies();
+        String cookieName = "user";
+        if(cookies !=null) {
+            for(Cookie c: cookies) {
+                if(cookieName.equals(c.getName())) {
+                    valueForName = c.getValue();
+                    break;
+                }
+            }
+        }
+        if (newPass == null || valueForName == null) {
+            resp.setStatus(204);
         } else {
             User user = new User(valueForName,newPass);
             userDao.changeUser(valueForName,user);

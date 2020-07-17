@@ -5,14 +5,16 @@ import org.example.user.UserDao;
 import org.example.user.UserService;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
     UserDao userDao = new InMemoryUserDao();
+
     UserService userService = new UserService(userDao);
+    HttpSession session;
+    Cookie cookie;
+    int lifeTime = 30;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,10 +25,14 @@ public class LoginServlet extends HttpServlet {
 
         if (validAuth) {
             req.getSession(true);
-        }else {
+            session = req.getSession();
+            session.setMaxInactiveInterval(lifeTime);
+            cookie = new Cookie("user",valueForName);
+            cookie.setMaxAge(lifeTime);
+            resp.addCookie(cookie);
+        } else {
             resp.getOutputStream().print("Wrong password!");
         }
-
 
 
     }

@@ -6,11 +6,14 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.example.filter.AuthFilter;
 import org.example.servlet.LoginServlet;
 import org.example.servlet.UserServlet;
 import org.example.user.InMemoryUserDao;
 import org.example.user.UserService;
+
+import javax.servlet.http.HttpSession;
 
 /*
  * 1) Написать сервлет, который на GET запрос возвращает сущность User в формате JSON.
@@ -49,14 +52,17 @@ public class Main {
     private final static int PORT = 8080;
 
     public static void main(String[] args) throws Exception {
-        new org.example.Main().start();
+        new Main().start();
     }
 
     private void start() throws Exception {
+
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+
         context.addServlet(new ServletHolder(new UserServlet()), "/user");
         context.addServlet(new ServletHolder(new LoginServlet()),"/login");
         context.addFilter(new FilterHolder(new AuthFilter()),"/user",null);
+       // context.setContextPath("src/main/resources/web.xml");
 
 
         Server server = new Server(PORT);

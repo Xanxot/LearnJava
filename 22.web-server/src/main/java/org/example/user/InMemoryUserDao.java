@@ -3,13 +3,15 @@ package org.example.user;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InMemoryUserDao implements org.example.user.UserDao {
+public class InMemoryUserDao implements UserDao{
+
 
     private final Map<String, User> users;
 
     public InMemoryUserDao() {
         users = new HashMap<>();
         users.put("John", new User("John", "qwerty"));
+        users.put("Test", new User("Test","qwerty"));
     }
 
     @Override
