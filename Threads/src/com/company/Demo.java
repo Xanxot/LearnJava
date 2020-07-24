@@ -11,8 +11,10 @@ public class Demo {
         Thread thread0 = new Thread(this::worker);
         Thread thread1 = new Thread(this::worker);
 
+
         thread0.start();
         thread1.start();
+
     }
 
     public void worker() {
