@@ -1,4 +1,4 @@
-package com.company.dbService.reflection;
+package com.company.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

@@ -1,4 +1,4 @@
-package com.company;
+package com.company.dbService.JDBC.Annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.company;
+package com.company.dbService.entities;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -46,7 +46,7 @@ public class User {
         return addressDataSet;
     }
 
-    public void setId(Long id) {
+    private void setId(Long id) {
         this.id = id;
     }
 

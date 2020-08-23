@@ -1,8 +1,8 @@
 package com.company.dbService;
 
-import com.company.IdException;
-import com.company.dbService.reflection.ReflectionHelpClass;
-import com.company.id;
+import com.company.dbService.JDBC.Exeptions.IdException;
+import com.company.util.ReflectionHelpClass;
+import com.company.dbService.JDBC.Annotations.id;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -12,12 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class DbServiceImpl<T> implements DbService<T> {
+public class DbServiceJDBC<T> implements DbService<T> {
     Executor executor;
     Class<? extends id> annotation = id.class;
     private final Connection connection;
 
-    public DbServiceImpl(DataSource dataSource) throws SQLException {
+    public DbServiceJDBC(DataSource dataSource) throws SQLException {
         this.executor = new Executor();
         this.connection = dataSource.getConnection();
     }
