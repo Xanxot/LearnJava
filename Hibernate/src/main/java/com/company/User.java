@@ -7,6 +7,7 @@ import java.util.Set;
 @Entity
 public class User {
     @Id
+    @GeneratedValue
     public Long id;
     public int age;
     public String name;
@@ -21,11 +22,11 @@ public class User {
     public User() {
     }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_address")
     private AddressDataSet addressDataSet;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_phone")
     private Set<PhoneDataSet> phoneDataSet = new HashSet<>();
 

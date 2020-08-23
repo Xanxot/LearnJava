@@ -3,12 +3,15 @@ package com.company.dbService;
 import com.company.AddressDataSet;
 import com.company.PhoneDataSet;
 import com.company.User;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+
+import java.util.Arrays;
 
 public class DbServiceHibernate implements DbService {
 
@@ -34,13 +37,18 @@ public class DbServiceHibernate implements DbService {
 
     @Override
     public void save(Object objectData) {
-        System.out.println("save");
-
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.save(objectData);
+            session.getTransaction().commit();
+        }
     }
 
     @Override
     public Object load(long id, Class clazz) {
-        System.out.println("load");
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(clazz,id);
+        }
+
     }
 }
