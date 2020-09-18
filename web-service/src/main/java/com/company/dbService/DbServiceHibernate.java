@@ -1,8 +1,9 @@
 package com.company.dbService;
 
-import com.company.entities.AddressDataSet;
-import com.company.entities.PhoneDataSet;
-import com.company.entities.User;
+
+import com.company.entyties.AddressDataSet;
+import com.company.entyties.PhoneDataSet;
+import com.company.entyties.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

@@ -1,4 +1,4 @@
-package com.company.dbService.entities;
+package com.company.entyties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,12 +8,11 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue
-    public Long id;
-    public int age;
-    public String name;
+    private Long id;
+    private int age;
+    private String name;
 
-    public User(Long id, String name, Integer age) {
-        this.id = id;
+    public User(String name, Integer age) {
         this.age = age;
         this.name = name;
 

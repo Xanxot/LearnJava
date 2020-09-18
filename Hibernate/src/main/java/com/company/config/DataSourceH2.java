@@ -1,4 +1,4 @@
-package com.company.dbService.config;
+package com.company.config;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;

@@ -1,4 +1,4 @@
-package com.company.dbService.entities;
+package com.company.entities;
 
 import javax.persistence.*;
 
